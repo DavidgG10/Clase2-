@@ -1,0 +1,89 @@
+import javax.swing.JOptionPane;
+
+class Estudiante {
+    private String nombre;
+    private String curso;
+    private String profesor;
+    private double calificacion;
+
+    public Estudiante(String nombre, String curso, String profesor, double calificacion) {
+        this.nombre = nombre;
+        this.curso = curso;
+        this.profesor = profesor;
+        this.calificacion = calificacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getCalificacion() {
+        return calificacion;
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre + ", Curso: " + curso + ", Profesor: " + profesor + ", Calificación: " + calificacion;
+    }
+}
+
+public class GestorEstudiantes {
+
+    public static void main(String[] args) {
+        Estudiante[] estudiantes = new Estudiante[10];
+
+        // Ingresar datos de los estudiantes
+        for (int i = 0; i < estudiantes.length; i++) {
+            String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante " + (i + 1) + ":");
+            String curso = JOptionPane.showInputDialog("Ingrese el curso para " + nombre + ":");
+            String profesor = JOptionPane.showInputDialog("Ingrese el profesor para " + nombre + ":");
+            double calificacion = Double.parseDouble(JOptionPane.showInputDialog("Ingrese la calificación para " + nombre + ":"));
+            estudiantes[i] = new Estudiante(nombre, curso, profesor, calificacion);
+        }
+
+        // Mostrar todos los estudiantes
+        String listaEstudiantes = "Listado de Estudiantes:\n";
+        for (int i = 0; i < estudiantes.length; i++) {
+            listaEstudiantes += estudiantes[i].toString() + "\n";
+        }
+        JOptionPane.showMessageDialog(null, listaEstudiantes);
+
+        // Encontrar el estudiante con la calificación más alta y más baja
+        Estudiante estudianteMayorNota = estudiantes[0];
+        Estudiante estudianteMenorNota = estudiantes[0];
+        double totalCalificaciones = 0;
+
+        for (int i = 0; i < estudiantes.length; i++) {
+            if (estudiantes[i].getCalificacion() > estudianteMayorNota.getCalificacion()) {
+                estudianteMayorNota = estudiantes[i];
+            }
+            if (estudiantes[i].getCalificacion() < estudianteMenorNota.getCalificacion()) {
+                estudianteMenorNota = estudiantes[i];
+            }
+            totalCalificaciones += estudiantes[i].getCalificacion();
+        }
+
+        // Calcular el promedio de calificaciones
+        double promedioCalificaciones = totalCalificaciones / estudiantes.length;
+
+        // Mostrar resultados
+        JOptionPane.showMessageDialog(null, "Estudiante con la Nota Mayor: " + estudianteMayorNota.toString());
+        JOptionPane.showMessageDialog(null, "Estudiante con la Nota Menor: " + estudianteMenorNota.toString());
+        JOptionPane.showMessageDialog(null, "Promedio de Calificaciones: " + promedioCalificaciones);
+
+        // Estudiantes por encima y por debajo del promedio
+        String listaEncimaPromedio = "Estudiantes con Calificaciones por Encima del Promedio:\n";
+        String listaDebajoPromedio = "Estudiantes con Calificaciones por Debajo del Promedio:\n";
+
+        for (int i = 0; i < estudiantes.length; i++) {
+            if (estudiantes[i].getCalificacion() > promedioCalificaciones) {
+                listaEncimaPromedio += estudiantes[i].toString() + "\n";
+            } else if (estudiantes[i].getCalificacion() < promedioCalificaciones) {
+                listaDebajoPromedio += estudiantes[i].toString() + "\n";
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, listaEncimaPromedio);
+        JOptionPane.showMessageDialog(null, listaDebajoPromedio);
+    }
+}
